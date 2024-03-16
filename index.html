@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Mark Sheets</title>
+<style>
+  /* Add your CSS styles here */
+</style>
+</head>
+<body>
+  <div id="output"></div>
+
+  <script>
+    const students = [
+      { name: "Dhishan Debnath", Roll: 1 },
+      { name: "Animesh Gupta", Roll: 2 },
+      { name: "Tapas Sen", Roll: 3 },
+      { name: "Misti Dutta", Roll: 4 },
+      { name: "Chini Misra", Roll: 5 }
+    ];
+    const Details = [
+      { Roll: 5, subjects: { math: 35, english: 56, chemistry: 76, computer: 68 } },
+      { Roll: 3, subjects: { math: 33, chemistry: 12, computer: 50, english: 35 } },
+      { Roll: 1, subjects: { math: 55, english: 75, chemistry: 76, computer: 94 } },
+      { Roll: 4, subjects: { english: 12, chemistry: 85, computer: 68, math: 45 } },
+      { Roll: 2, subjects: { math: 55, english: 56, computer: 48, chemistry: 12 } }
+    ];
+
+    function generateStudentMarkSheets(students, Details) {
+      const studentsMarkSheets = [];
+
+      students.forEach(student => {
+        const studentDetails = Details.find(detail => detail.Roll === student.Roll);
+        const marks = studentDetails.subjects;
+        const totalMarks = Object.values(marks).reduce((acc, curr) => acc + curr, 0);
+        const status = totalMarks >= 200 ? "pass" : "fail";
+
+        studentsMarkSheets.push({
+          name: student.name,
+          Roll: student.Roll,
+          ...marks,
+          total: totalMarks,
+          status: status
+        });
+      });
+
+      return studentsMarkSheets;
+    }
+
+    const studentsMarkSheets = generateStudentMarkSheets(students, Details);
+    console.log(studentsMarkSheets);
+
+    // Display the output in HTML
+    const outputDiv = document.getElementById('output');
+    studentsMarkSheets.forEach(student => {
+      const studentDiv = document.createElement('div');
+      studentDiv.innerHTML = `
+        <p>Name: ${student.name}</p>
+        <p>Roll: ${student.Roll}</p>
+        <p>Math: ${student.math}</p>
+        <p>English: ${student.english}</p>
+        <p>Chemistry: ${student.chemistry}</p>
+        <p>Computer: ${student.computer}</p>
+        <p>Total Marks: ${student.total}</p>
+        <p>Status: ${student.status}</p>
+        <hr>
+      `;
+      outputDiv.appendChild(studentDiv);
+    });
+  </script>
+</body>
+</html>
